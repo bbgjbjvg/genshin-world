@@ -1,16 +1,26 @@
 name: 构建 APK
 
-on://n  push://n    branches: [ main ]
-  pull_request://n    branches: [ main ]
-  workflow_dispatch://n//njobs://n  build://n    runs-on: ubuntu-latest
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
 
-    steps://n      - uses: actions/checkout@v4
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
-        with://n          channel: stable
+        with:
+          channel: stable
           flutter-version: 3.29.2
       - run: flutter pub get
       - run: flutter create --platforms=android .
       - run: flutter build apk --release
       - uses: actions/upload-artifact@v4
-        with://n          name: genshin-world-apk
+        with:
+          name: genshin-world-apk
           path: build/app/outputs/flutter-apk/app-release.apk
