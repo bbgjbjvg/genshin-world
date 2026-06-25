@@ -3,8 +3,6 @@ name: 构建 APK
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -20,16 +18,7 @@ jobs:
       - run: flutter pub get
       - run: flutter create --platforms=android .
       - run: flutter build apk --release
-
-      - name: 创建 Release 并上传 APK
-        uses: softprops/action-gh-release@v2
+      - uses: actions/upload-artifact@v4
         with:
-          tag_name: v1.0.${{ github.run_number }}
-          name: 原神世界观 APP v1.0.${{ github.run_number }}
-          body: |
-            🤖 自动构建 APK
-            - 点击下方的 **genshin-world.apk** 下载安装
-            - 下载到手机后直接点击安装即可
-          files: build/app/outputs/flutter-apk/app-release.apk
-          generate_release_notes: false
-          make_latest: true
+          name: genshin-world-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
